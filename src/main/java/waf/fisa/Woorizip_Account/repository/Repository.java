@@ -9,6 +9,6 @@ public interface Repository extends JpaRepository<Account, String> {
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Account a WHERE a.nickname = :nickname")
     Boolean existedByNickname(String nickname);
 
-    @Query("SELECT a.nickname FROM Account a WHERE a.id = :accountId")
+    @Query("SELECT a.phone FROM Account a WHERE a.id = :accountId")
     String findByAccountId(String accountId);
 }

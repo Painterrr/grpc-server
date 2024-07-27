@@ -30,9 +30,10 @@ public class ServiceImpl extends RequirementAccountServiceGrpc.RequirementAccoun
 
         log.info("[in GrpcService, AccountId: {}, phone: {}", req.getAccountId(), phone);
 
-        responseObserver.onNext(PhoneResp.newBuilder()
-            .setPhone(phone)
-            .build()
+        responseObserver.onNext(
+                PhoneResp.newBuilder()
+                .setPhone(phone)
+                .build()
         );
 
         responseObserver.onCompleted();
