@@ -11,12 +11,19 @@ public class LoggingInterceptor implements ServerInterceptor {
             ServerCall<ReqT, RespT> call, Metadata headers, ServerCallHandler<ReqT, RespT> next) {
         log.info("** Call method: {}", call.getMethodDescriptor().getFullMethodName());
         log.info("** Headers: {}", headers);
-        return next.startCall(new ForwardingServerCall.SimpleForwardingServerCall<ReqT, RespT>(call) {
+
+        return new ForwardingServerCallListener.SimpleForwardingServerCallListener<ReqT>(next.startCall(call, headers)) {
             @Override
-            public void sendMessage(RespT message) {
-                log.info("** Response: {}", message);
-                super.sendMessage(message);
+            public void onMessage(ReqT message) {
+                log.info("** Received message: {}", message);
+                super.onMessage(message);
             }
-        }, headers);
+
+            @Override
+            public void onComplete() {
+                log.info("** Call completed");
+                super.onComplete();
+            }
+        };
     }
 }
